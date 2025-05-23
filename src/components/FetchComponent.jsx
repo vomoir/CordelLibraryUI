@@ -73,17 +73,12 @@ const FetchComponent = () => {
         </label>
       </div>
       <button onClick={toggleDarkMode}>🌙 Toggle Dark Mode</button>
-      <div>
-        <label>
-          Sort order:
-          <select
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
-          >
-            <option value="asc">Ascending (A-Z)</option>
-            <option value="desc">Descending (Z-A)</option>
-          </select>
-        </label>
+
+      <div className="pagination">
+        <button onClick={prevPage} disabled={currentPage === 1}>
+          ⬅ Previous
+        </button>
+        <button onClick={nextPage}>Next ➡</button>
       </div>
 
       <h3>Books (Page {currentPage}):</h3>
@@ -144,13 +139,6 @@ const FetchComponent = () => {
             ))}
         </tbody>
       </table>
-
-      <div>
-        <button onClick={prevPage} disabled={currentPage === 1}>
-          ⬅ Previous
-        </button>
-        <button onClick={nextPage}>Next ➡</button>
-      </div>
 
       {selectedBook && (
         <motion.div
@@ -214,15 +202,14 @@ const FetchComponent = () => {
         >
           <div className="card-content">
             <EditBook
-              post={editingBook}
               saveEdit={(data) => {
                 updateBook(data);
                 clearEditingBook();
               }}
+              onClose={() => setEditingBook(false)}
             />
-
-            <button onClick={clearEditingBook}>Cancel</button>
           </div>
+          <button onClick={clearEditingBook}>Cancel</button>
         </motion.div>
       )}
     </div>
