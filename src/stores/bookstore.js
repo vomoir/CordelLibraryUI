@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 
 const useStore = create((set) => ({
-  posts: [],
-  users: [],
+  books: [],
+
   loadingBooks: false,
 
   errorBooks: null,
@@ -13,8 +13,7 @@ const useStore = create((set) => ({
   sortOrder: 'asc',
   selectedBook: null,
   editingBook: null,
-  setEditingBook: (post) => set({ editingBook: post }),
-
+  setEditingBook: (book) => set({ editingBook: book }),
   clearEditingBook: () => set({ editingBook: null }),
   darkMode: JSON.parse(localStorage.getItem('darkMode')) || false,
   toggleDarkMode: () =>
@@ -32,9 +31,10 @@ const useStore = create((set) => ({
   setSortOrder: (order) => set({ sortOrder: order }),
   setSelectedBook: (book) => set({ selectedBook: book }),
   updateBook: async (updatedBook) => {
+    console.log('Updating book:', updatedBook);
     try {
       const response = await fetch(
-        `https://jsonplaceholder.typicode.com/posts/${updatedBook.id}`,
+        `https://localhost:7179/api/Books/${updatedBook.id}`,
         {
           method: 'PUT', // PUT simulates an update
           headers: { 'Content-Type': 'application/json' },
@@ -57,14 +57,13 @@ const useStore = create((set) => ({
   fetchBooks: async (page = 1, limit = 5, sortOrder = 'asc') => {
     set({ loadingBooks: true, errorBooks: null });
     try {
-      // const response = await fetch(`https://jsonplaceholder.typicode.com/posts?_page=${page}&_limit=${limit}`);
       const response = await fetch(
         `https://localhost:7179/api/Books?page=${page}&limit=${limit}`
       );
       if (!response.ok)
         throw new Error(`HTTP error! Status: ${response.status}`);
       let data = await response.json();
-
+      console.log('Retrieving all books:', data);
       // Apply sorting
       data = data.sort((a, b) => {
         return sortOrder === 'asc'

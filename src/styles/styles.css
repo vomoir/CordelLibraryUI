@@ -105,6 +105,13 @@ select {
   }
 }
 
+.pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 2px;
+}
+
 .card-content {
   text-align: center;
   padding: 2rem;
@@ -117,7 +124,7 @@ select {
   borderradius: 1rem;
   boxshadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  width: 400px;
+  width: 600px;
   background: white;
 }
 .card-content h3 {
