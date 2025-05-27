@@ -111,7 +111,16 @@ const FetchComponent = () => {
           {books
             ?.filter((book) => book.title.includes(filterKeyword))
             .map((book) => (
-              <tr key={book.id} onClick={() => setSelectedBook(book)}>
+              <tr
+                key={book.id}
+                onClick={(event) => {
+                  if (event.target.tagName === 'TD') {
+                    setSelectedBook(book);
+                  } else if (event.target.tagName === 'BUTTON') {
+                    setEditingBook(book);
+                  }
+                }}
+              >
                 <td>{book.id}</td>
                 <td>{book.title}</td>
                 <td>{book.author}</td>
@@ -131,7 +140,7 @@ const FetchComponent = () => {
                   )}
                 </td>
                 <td>
-                  <button onClick={() => setEditingBook(book)}>
+                  <button>
                     <FaEdit /> Edit
                   </button>
                 </td>

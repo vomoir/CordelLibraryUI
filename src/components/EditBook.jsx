@@ -6,8 +6,8 @@ import { useEffect } from 'react';
 import { formatDate } from '../lib/utils';
 
 const EditBook = () => {
-  const { setEditingBook, selectedBook, updateBook } = useStore();
-  const bookData = selectedBook;
+  const { setEditingBook, editingBook, updateBook } = useStore();
+  const bookData = editingBook;
   const formattedDate = formatDate(bookData.PublishedDate);
   const {
     register,
