@@ -33,7 +33,6 @@ const EditBook = () => {
     console.log(`Deleting book: ${JSON.stringify(book)}`);
     // Update form fields when bookData changes
     deleteBook(book.id); // Delete the book in the store
-
     setEditingBook(false); // Close the edit form
   };
 

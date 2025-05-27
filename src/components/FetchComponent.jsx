@@ -40,40 +40,45 @@ const FetchComponent = () => {
 
   return (
     <div className={darkMode ? 'dark-mode' : ''}>
-      <label>
-        Posts per page:
-        <input
-          type="number"
-          value={booksPerPage}
-          onChange={(e) => setBooksPerPage(Number(e.target.value))}
-          min="1"
-        />
-        <button onClick={() => fetchBooks(1, booksPerPage)}>Apply</button>
-      </label>
-      <div>
-        <label>
-          Sort order:
-          <select
-            value={sortOrder}
-            onChange={(e) => setSortOrder(e.target.value)}
-          >
-            <option value="asc">Ascending (A-Z)</option>
-            <option value="desc">Descending (Z-A)</option>
-          </select>
-        </label>
-      </div>
-
-      <div>
-        <label>
-          Filter by keyword:
+      <div className="buttonsContainer">
+        <div className="buttonGroup">
+          <label for="booksPerPage">Books per page:</label>
           <input
-            type="text"
-            value={filterKeyword}
-            onChange={(e) => setFilterKeyword(e.target.value)}
+            type="number"
+            id="booksPerPage"
+            name="booksPerPage"
+            value={booksPerPage}
+            onChange={(e) => setBooksPerPage(Number(e.target.value))}
+            min="1"
           />
-        </label>
+          <button onClick={() => fetchBooks(1, booksPerPage)}>Apply</button>
+        </div>
+
+        <div className="buttonGroup">
+          <label>
+            Sort order:
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+            >
+              <option value="asc">Ascending (A-Z)</option>
+              <option value="desc">Descending (Z-A)</option>
+            </select>
+          </label>
+        </div>
+
+        <div className="buttonGroup">
+          <label>
+            Filter Title by keyword:
+            <input
+              type="text"
+              value={filterKeyword}
+              onChange={(e) => setFilterKeyword(e.target.value)}
+            />
+          </label>
+        </div>
+        <button onClick={toggleDarkMode}>🌙 Toggle Dark Mode</button>
       </div>
-      <button onClick={toggleDarkMode}>🌙 Toggle Dark Mode</button>
 
       <div className="pagination">
         <button onClick={prevPage} disabled={currentPage === 1}>
@@ -95,61 +100,62 @@ const FetchComponent = () => {
         </p>
       )}
 
-      <table border="1">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Publisher</th>
-            <th>Published Date</th>
-            <th>Number of Pages</th>
-            <th>Blurb</th>
-            <th>Book Cover</th>
-          </tr>
-        </thead>
-        <tbody>
-          {books
-            ?.filter((book) => book.title.includes(filterKeyword))
-            .map((book) => (
-              <tr
-                key={book.id}
-                onClick={(event) => {
-                  if (event.target.tagName === 'TD') {
-                    setSelectedBook(book);
-                  } else if (event.target.tagName === 'BUTTON') {
-                    setEditingBook(book);
-                  }
-                }}
-              >
-                <td>{book.id}</td>
-                <td>{book.title}</td>
-                <td>{book.author}</td>
-                <td>{book.publisher}</td>
-                <td>{formatDate(book.publishedDate)}</td>
-                <td>{book.numberOfPages}</td>
-                <td>{book.blurb}</td>
-                <td>
-                  {book.coverUrl ? (
-                    <img
-                      src={fixUrl(book.coverUrl)}
-                      alt={book.title}
-                      height="100"
-                    />
-                  ) : (
-                    <span>No cover available</span>
-                  )}
-                </td>
-                <td>
-                  <button>
-                    <FaEdit /> Edit
-                  </button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-
+      <div className="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Publisher</th>
+              <th>Published Date</th>
+              <th>Number of Pages</th>
+              <th>Blurb</th>
+              <th>Book Cover</th>
+            </tr>
+          </thead>
+          <tbody>
+            {books
+              ?.filter((book) => book.title.includes(filterKeyword))
+              .map((book) => (
+                <tr
+                  key={book.id}
+                  onClick={(event) => {
+                    if (event.target.tagName === 'TD') {
+                      setSelectedBook(book);
+                    } else if (event.target.tagName === 'BUTTON') {
+                      setEditingBook(book);
+                    }
+                  }}
+                >
+                  <td>{book.id}</td>
+                  <td>{book.title}</td>
+                  <td>{book.author}</td>
+                  <td>{book.publisher}</td>
+                  <td>{formatDate(book.publishedDate)}</td>
+                  <td>{book.numberOfPages}</td>
+                  <td>{book.blurb}</td>
+                  <td>
+                    {book.coverUrl ? (
+                      <img
+                        src={fixUrl(book.coverUrl)}
+                        alt={book.title}
+                        height="100"
+                      />
+                    ) : (
+                      <span>No cover available</span>
+                    )}
+                  </td>
+                  <td>
+                    <button>
+                      <FaEdit /> Edit
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
       {selectedBook && (
         <motion.div
           initial={{ opacity: 0, y: -10, scale: 0.5 }}

@@ -65,12 +65,8 @@ const useStore = create((set) => ({
 
       if (!response.ok)
         throw new Error(`HTTP error! Status: ${response.status}`);
+      // Indicate to the main page that a book has been deleted
       set({ bookDeleted: true });
-      // set((state) => ({
-      //   books: state.books.map((book) =>
-      //     book.id === deletedBookId ? deletedBookId : book
-      //   ),
-      // }));
     } catch (error) {
       console.error('Delete failed:', error);
     }
