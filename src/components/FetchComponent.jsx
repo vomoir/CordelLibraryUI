@@ -31,11 +31,12 @@ const FetchComponent = () => {
     setEditingBook,
     updateBook,
     clearEditingBook,
+    bookDeleted,
   } = useStore();
 
   useEffect(() => {
     fetchBooks(currentPage, booksPerPage);
-  }, [currentPage, fetchBooks, booksPerPage]);
+  }, [currentPage, fetchBooks, booksPerPage, bookDeleted]);
 
   return (
     <div className={darkMode ? 'dark-mode' : ''}>
@@ -215,7 +216,9 @@ const FetchComponent = () => {
                 updateBook(data);
                 clearEditingBook();
               }}
-              onClose={() => setEditingBook(false)}
+              onClose={() => {
+                setEditingBook(false);
+              }}
             />
           </div>
           <button onClick={clearEditingBook}>Cancel</button>

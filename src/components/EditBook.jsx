@@ -2,11 +2,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { bookSchema } from '../schemas/validation';
 import useStore from '../stores/bookstore';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { fixUrl, formatDate } from '../lib/utils';
 
 const EditBook = () => {
-  const { setEditingBook, editingBook, updateBook } = useStore();
+  const { setEditingBook, editingBook, updateBook, deleteBook, fetchBooks } =
+    useStore();
   const bookData = editingBook;
   const formattedDate = formatDate(bookData.PublishedDate);
   const {
@@ -20,8 +21,6 @@ const EditBook = () => {
   });
 
   const onSubmit = (data) => {
-    console.log('Validated Data:', data);
-
     console.log(`Updating book: ${JSON.stringify(data)}`);
     updateBook(data); // Update the book in the store
     setEditingBook(false); // Close the edit form
@@ -29,7 +28,15 @@ const EditBook = () => {
     reset(); // Reset the form fields
     setEditingBook(null); // Clear the editing state
   };
-  // Update form fields when bookData changes
+
+  const deleteBookHandler = async (book) => {
+    console.log(`Deleting book: ${JSON.stringify(book)}`);
+    // Update form fields when bookData changes
+    deleteBook(book.id); // Delete the book in the store
+
+    setEditingBook(false); // Close the edit form
+  };
+
   useEffect(() => {
     if (bookData) {
       reset(bookData); // Explicitly set form values
@@ -101,10 +108,27 @@ const EditBook = () => {
         )}
       </div>
 
-      <button type="submit">Save Changes</button>
-      <button type="button" onClick={() => setEditingBook(false)}>
-        Cancel
-      </button>
+      <div style={styles.buttonContainer}>
+        <button type="submit" style={styles.saveBtn}>
+          Save Changes
+        </button>
+
+        <button
+          type="button"
+          style={styles.deleteBtn}
+          onClick={() => deleteBookHandler(editingBook)}
+        >
+          Delete Book
+        </button>
+
+        <button
+          type="button"
+          style={styles.cancelBtn}
+          onClick={() => setEditingBook(false)}
+        >
+          Cancel
+        </button>
+      </div>
     </form>
   );
 };
@@ -129,6 +153,44 @@ const styles = {
     flex: 1, // Makes input take up the remaining space
     padding: '5px',
   },
+  buttonContainer: {
+    display: 'flex',
+    gap: '10px' /* Spacing between buttons */,
+    justifyContent: 'flexEnd' /* Align buttons to the right */,
+    marginTop: '20px' /* Spacing from form fields */,
+  },
+  saveBtn: {
+    padding: '10px 15px',
+    fontSize: '16px',
+    border: 'none',
+    cursor: 'pointer',
+    borderRadius: '5px',
+    backgroundColor: '#28a745' /* Green */,
+    color: 'white',
+  },
+
+  deleteBtn: {
+    padding: '10px 15px',
+    fontSize: '16px',
+    border: 'none',
+    cursor: 'pointer',
+    borderRadius: '5px',
+    backgroundColor: '#dc3545' /* Red */,
+    color: 'white',
+  },
+
+  cancelBtn: {
+    padding: '10px 15px',
+    fontSize: '16px',
+    border: 'none',
+    cursor: 'pointer',
+    borderRadius: '5px',
+    backgroundColor: '#6c757d' /* Gray */,
+    color: 'white',
+  },
+  // btn:hover:{
+  //   opacity: '0.8',
+  // }
 };
 
 export default EditBook;

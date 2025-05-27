@@ -12,6 +12,7 @@ const useStore = create((set) => ({
   editingBook: null,
   setEditingBook: (book) => set({ editingBook: book }),
   clearEditingBook: () => set({ editingBook: null }),
+  bookDeleted: false,
   darkMode: JSON.parse(localStorage.getItem('darkMode')) || false,
   toggleDarkMode: () =>
     set((state) => {
@@ -28,7 +29,7 @@ const useStore = create((set) => ({
   setSortOrder: (order) => set({ sortOrder: order }),
   setSelectedBook: (book) => set({ selectedBook: book }),
   updateBook: async (updatedBook) => {
-    console.log('Updating book:', updatedBook);
+    console.log('In bookstore: Updating book:', updatedBook);
     try {
       const response = await fetch(
         `https://localhost:7179/api/Books/${updatedBook.id}`,
@@ -51,8 +52,31 @@ const useStore = create((set) => ({
       console.error('Update failed:', error);
     }
   },
+  deleteBook: async (deletedBookId) => {
+    console.log('In bookstore: Deleting book with id:', deletedBookId);
+    try {
+      const response = await fetch(
+        `https://localhost:7179/api/Books/${deletedBookId}`,
+        {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
+
+      if (!response.ok)
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      set({ bookDeleted: true });
+      // set((state) => ({
+      //   books: state.books.map((book) =>
+      //     book.id === deletedBookId ? deletedBookId : book
+      //   ),
+      // }));
+    } catch (error) {
+      console.error('Delete failed:', error);
+    }
+  },
   fetchBooks: async (page = 1, limit = 5, sortOrder = 'asc') => {
-    set({ loadingBooks: true, errorBooks: null });
+    set({ loadingBooks: true, errorBooks: null, bookDeleted: false });
     try {
       const response = await fetch(
         `https://localhost:7179/api/Books?page=${page}&limit=${limit}`
