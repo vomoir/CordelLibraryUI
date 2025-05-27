@@ -8,7 +8,7 @@ export function formatDate(dateStr) {
 }
 
 export function fixUrl(url) {
-  if (url.startsWith('https=//')) {
+  if (url && url.startsWith('https=//')) {
     return url.replace('https=//', 'https://');
   }
   return url;

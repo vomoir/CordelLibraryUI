@@ -2,8 +2,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { bookSchema } from '../schemas/validation';
 import useStore from '../stores/bookstore';
-import { useEffect } from 'react';
-import { formatDate } from '../lib/utils';
+import { useEffect, useState } from 'react';
+import { fixUrl, formatDate } from '../lib/utils';
 
 const EditBook = () => {
   const { setEditingBook, editingBook, updateBook } = useStore();
@@ -20,6 +20,8 @@ const EditBook = () => {
   });
 
   const onSubmit = (data) => {
+    console.log('Validated Data:', data);
+
     console.log(`Updating book: ${JSON.stringify(data)}`);
     updateBook(data); // Update the book in the store
     setEditingBook(false); // Close the edit form
@@ -37,7 +39,6 @@ const EditBook = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={styles.form}>
       <input type="hidden" {...register('id')} value={bookData.Id} />
-
       <div style={styles.formRow}>
         <label style={styles.label}>Title:</label>
         <input
@@ -67,7 +68,7 @@ const EditBook = () => {
           defaultValue={formattedDate} // Set the default value to the formatted date
           style={styles.input}
         />
-        {errors.PublishedDate && <span>{errors.PublishedDate.message}</span>}
+        {errors.publishedDate && <span>{errors.publishedDate.message}</span>}
       </div>
 
       <div style={styles.formRow}>
@@ -77,13 +78,27 @@ const EditBook = () => {
           {...register('numberOfPages')}
           style={styles.input}
         />
-        {errors.NumberOfPages && <span>{errors.NumberOfPages.message}</span>}
+        {errors.numberOfPages && <span>{errors.numberOfPages.message}</span>}
       </div>
 
       <div style={styles.formRow}>
         <label style={styles.label}>Blurb:</label>
         <textarea {...register('blurb')} style={styles.input} />
-        {errors.Blurb && <span>{errors.Blurb.message}</span>}
+        {errors.blurb && <span>{errors.blurb.message}</span>}
+      </div>
+
+      <div style={styles.formRow}>
+        <label style={styles.label}>Cover Url:</label>
+        <input
+          type="input"
+          {...register('coverUrl')}
+          value={fixUrl(bookData.CoverUrl)}
+          style={styles.input}
+          placeholder="https://example.com/cover.jpg"
+        />
+        {errors.coverUrl && (
+          <p style={{ color: 'red' }}>{errors.coverUrl.message}</p>
+        )}
       </div>
 
       <button type="submit">Save Changes</button>

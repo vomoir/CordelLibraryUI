@@ -2,11 +2,8 @@ import { create } from 'zustand';
 
 const useStore = create((set) => ({
   books: [],
-
   loadingBooks: false,
-
   errorBooks: null,
-
   currentPage: 1,
   booksPerPage: Number(localStorage.getItem('booksPerPage')) || 5,
   filterKeyword: '',
