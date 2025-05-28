@@ -1,12 +1,21 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { bookSchema } from '../schemas/bookSchema';
-import useStore from '../stores/bookstore';
+import useBookStore from '../stores/bookstore';
 import { useEffect } from 'react';
 import { fixUrl, formatDate } from '../lib/utils';
 
 const EditBook = () => {
-  const { setEditingBook, editingBook, updateBook, deleteBook } = useStore();
+  const {
+    fetchBooks,
+    setEditingBook,
+    editingBook,
+    isEditing,
+    updateBook,
+    deleteBook,
+    createBook,
+  } = useBookStore();
+
   const bookData = editingBook;
   const formattedDate = formatDate(bookData.PublishedDate);
   const {
@@ -18,22 +27,25 @@ const EditBook = () => {
     resolver: zodResolver(bookSchema),
     defaultValues: bookData,
   });
-
-  const onSubmit = (data) => {
-    console.log(`Updating book: ${JSON.stringify(data)}`);
-    updateBook(data); // Update the book in the store
-    setEditingBook(false); // Close the edit form
-    // Optionally, you can also reset the form after submission
-    reset(); // Reset the form fields
-    setEditingBook(null); // Clear the editing state
-  };
-
+  //Working for editing book
   // const onSubmit = async (data) => {
-  // console.log(`Updating book: ${JSON.stringify(data)}`);
-  // if (isEditing) {
-  //   await updateBook(data);
-  // } else {
-  //   await createBook(data);
+  //   console.log(`Updating book: ${JSON.stringify(data)}`);
+  //   updateBook(data);
+
+  //   setEditingBook(false); // Close the edit form
+  //   reset(); // Reset the form fields
+  //   setEditingBook(null); // Clear the editing state
+  // };
+  const onSubmit = async (data) => {
+    console.log(`Submitting book: ${JSON.stringify(data)}`);
+    if (isEditing) {
+      await updateBook(data); // Update existing book
+    } else {
+      await createBook(data); // Create a new book
+    }
+
+    fetchBooks(); // Refresh the book list
+  };
 
   const deleteBookHandler = async (book) => {
     console.log(`Deleting book: ${JSON.stringify(book)}`);
@@ -106,7 +118,7 @@ const EditBook = () => {
           {...register('coverUrl')}
           value={fixUrl(bookData.CoverUrl)}
           style={styles.input}
-          placeholder="https://example.com/cover.jpg"
+          placeholder="https://covers.openlibrary.org/b/id/1-M.jpg"
         />
         {errors.coverUrl && (
           <p style={{ color: 'red' }}>{errors.coverUrl.message}</p>
@@ -193,9 +205,6 @@ const styles = {
     backgroundColor: '#6c757d' /* Gray */,
     color: 'white',
   },
-  // btn:hover:{
-  //   opacity: '0.8',
-  // }
 };
 
 export default EditBook;

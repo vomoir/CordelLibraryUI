@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-const useStore = create((set) => ({
+const useBookStore = create((set) => ({
   books: [],
   loadingBooks: false,
   errorBooks: null,
@@ -10,8 +10,25 @@ const useStore = create((set) => ({
   sortOrder: 'asc',
   selectedBook: null,
   editingBook: null,
-  setEditingBook: (book) => set({ editingBook: book }),
-  clearEditingBook: () => set({ editingBook: null }),
+  isEditing: false,
+  setEditingBook: (book) =>
+    set({
+      editingBook: book, // Ensure null when no book is provided
+      isEditing: true, // Toggle based on book existence
+    }),
+  clearEditingBook: () => set({ editingBook: null, isEditing: false }),
+
+  getBookData: () => ({
+    title: '',
+    author: '',
+    publisher: '',
+    publishedDate: '',
+    numberOfPages: 0,
+    blurb: '',
+    coverUrl: '',
+    ...(useBookStore.getState().editingBook || {}), // Merge existing book data
+  }),
+
   bookDeleted: false,
   darkMode: JSON.parse(localStorage.getItem('darkMode')) || false,
   toggleDarkMode: () =>
@@ -48,6 +65,21 @@ const useStore = create((set) => ({
           book.id === updatedBook.id ? updatedBook : book
         ),
       }));
+    } catch (error) {
+      console.error('Update failed:', error);
+    }
+  },
+  createBook: async (updatedBook) => {
+    console.log('In bookstore: Creating book:', updatedBook);
+    try {
+      const response = await fetch(`https://localhost:7179/api/Books`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedBook),
+      });
+
+      if (!response.ok)
+        throw new Error(`HTTP error! Status: ${response.status}`);
     } catch (error) {
       console.error('Update failed:', error);
     }
@@ -95,4 +127,4 @@ const useStore = create((set) => ({
   },
 }));
 
-export default useStore;
+export default useBookStore;
