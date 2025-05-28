@@ -2,13 +2,12 @@ import React, { useEffect } from 'react';
 import { FaEdit } from 'react-icons/fa'; // Import edit icon
 import EditBook from './EditBook'; // Import the EditBook component
 import { formatDate, fixUrl } from '../lib/utils';
-import { motion } from 'framer-motion';
 
-import useStore from '../stores/bookstore';
+import useBookStore from '../stores/bookstore';
 import { FaSpinner } from 'react-icons/fa';
 import '../styles/styles.css';
 
-const FetchComponent = () => {
+const BooksDisplay = () => {
   const {
     books,
     loadingBooks,
@@ -32,7 +31,7 @@ const FetchComponent = () => {
     updateBook,
     clearEditingBook,
     bookDeleted,
-  } = useStore();
+  } = useBookStore();
 
   useEffect(() => {
     fetchBooks(currentPage, booksPerPage);
@@ -42,7 +41,7 @@ const FetchComponent = () => {
     <div className={darkMode ? 'dark-mode' : ''}>
       <div className="buttonsContainer">
         <div className="buttonGroup">
-          <label for="booksPerPage">Books per page:</label>
+          <label htmlFor="booksPerPage">Books per page:</label>
           <input
             type="number"
             id="booksPerPage"
@@ -87,18 +86,21 @@ const FetchComponent = () => {
         <button onClick={nextPage}>Next ➡</button>
       </div>
 
-      <h3>Books (Page {currentPage}):</h3>
-      {loadingBooks && <FaSpinner size={24} className="spinner" />}
-      {errorBooks && (
-        <p>
-          Error: {errorBooks}{' '}
-          <button
-            onClick={() => fetchBooks(currentPage, booksPerPage, sortOrder)}
-          >
-            Retry
-          </button>
-        </p>
-      )}
+      <div className="buttonGroup">
+        <h3>Books (Page {currentPage}):</h3>
+        {loadingBooks && <FaSpinner size={24} className="spinner" />}
+        {errorBooks && (
+          <p>
+            Error: {errorBooks}
+            <button
+              onClick={() => fetchBooks(currentPage, booksPerPage, sortOrder)}
+            >
+              Retry
+            </button>
+          </p>
+        )}
+        {/* <button onClick={setEditingBook(null)}>Add Book</button> */}
+      </div>
 
       <div className="table-container">
         <table>
@@ -157,7 +159,7 @@ const FetchComponent = () => {
         </table>
       </div>
       {selectedBook && (
-        <motion.div
+        <div
           initial={{ opacity: 0, y: -10, scale: 0.5 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, scale: 0.5 }}
@@ -198,24 +200,11 @@ const FetchComponent = () => {
             </p>
             <button onClick={() => setSelectedBook(null)}>Close</button>
           </div>
-        </motion.div>
+        </div>
       )}
 
       {editingBook && (
-        <motion.div
-          initial={{ opacity: 0, y: -10, scale: 0.5 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.5 }}
-          transition={{ duration: 0.5, type: 'spring' }}
-          style={{
-            marginTop: '20px',
-            padding: '10px',
-            background: '#f8f9fa',
-            border: '1px solid #ccc',
-            width: 'fit-content',
-            transform: 'translateX(-50%)',
-          }}
-        >
+        <div>
           <div className="card-content">
             <EditBook
               saveEdit={(data) => {
@@ -223,15 +212,15 @@ const FetchComponent = () => {
                 clearEditingBook();
               }}
               onClose={() => {
-                setEditingBook(false);
+                setEditingBook(null);
               }}
             />
           </div>
           <button onClick={clearEditingBook}>Cancel</button>
-        </motion.div>
+        </div>
       )}
     </div>
   );
 };
 
-export default FetchComponent;
+export default BooksDisplay;

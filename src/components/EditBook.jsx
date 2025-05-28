@@ -1,13 +1,12 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { bookSchema } from '../schemas/validation';
+import { bookSchema } from '../schemas/bookSchema';
 import useStore from '../stores/bookstore';
 import { useEffect } from 'react';
 import { fixUrl, formatDate } from '../lib/utils';
 
 const EditBook = () => {
-  const { setEditingBook, editingBook, updateBook, deleteBook, fetchBooks } =
-    useStore();
+  const { setEditingBook, editingBook, updateBook, deleteBook } = useStore();
   const bookData = editingBook;
   const formattedDate = formatDate(bookData.PublishedDate);
   const {
@@ -28,6 +27,13 @@ const EditBook = () => {
     reset(); // Reset the form fields
     setEditingBook(null); // Clear the editing state
   };
+
+  // const onSubmit = async (data) => {
+  // console.log(`Updating book: ${JSON.stringify(data)}`);
+  // if (isEditing) {
+  //   await updateBook(data);
+  // } else {
+  //   await createBook(data);
 
   const deleteBookHandler = async (book) => {
     console.log(`Deleting book: ${JSON.stringify(book)}`);

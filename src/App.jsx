@@ -1,5 +1,5 @@
 import React from 'react';
-import FetchComponent from './components/FetchComponent';
+import BooksDisplay from './components/BooksDisplay';
 import Footer from './layout/Footer';
 import Header from './layout/Header';
 
@@ -7,7 +7,7 @@ const App = () => {
   return (
     <div>
       <Header />
-      <FetchComponent />
+      <BooksDisplay />
       <Footer />
     </div>
   );
