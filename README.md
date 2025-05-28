@@ -21,7 +21,7 @@ Redux is better suited for larger more complex uses and scales better, but for m
 All the state and api interactions take place in the **"src/stores/bookstore.js"** file. The code needs a little optimising but I was learning as I was going so it may look a little obtuse.
 The interface itself is fairly pedestrian. The application's styling is a bit inconsistent as well: using CSS styling in most instances but also javascript styling in the EditBook form.
 
-**Note:** some of the more esoteric functionality (paging and sorting) is not functional at this stage. (I had them going but clobbered them somehow hand haven't gone back to fix!)
+**Note:** some of the more esoteric functionality (paging and sorting) is not functional at this stage. (I had them going but clobbered them somehow and haven't gone back to fix!)
 
 ## Available Scripts
 
