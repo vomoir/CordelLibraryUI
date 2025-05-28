@@ -1,70 +1,46 @@
-# Getting Started with Create React App
+# Cordel Library UI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is the front end for the [https://github.com/vomoir/CordelLibraryApi](https://github.com/vomoir/CordelLibraryApi%5C) backend project.
+Running this project is dependent on running the API first.
+
+The task was to create a simple API that emplys an in memory database to create, edit and store a list of library books.
+
+I added some seed data and code to the API  so that you have something to play with right off the bat. I also made use of the Book Covers Open Library (https://covers.openlibrary.org) to display a cover for the books.
+
+Note that the book covers don't align with the actual title of the books! They're just for decorative purposes. To get the actual book cover would require looking up the ISBN of the title and then using that in the URL. Out of the scope for this task!
+
+The UI is written in plain old javascript on the React platform.  
+There's nothing very special about the codebase except that it uses **zustand** [(https://zustand.docs.pmnd.rs/getting-started/introduction)](https://zustand.docs.pmnd.rs/getting-started/introduction%5C) as the state management apparatus.  
+**Zustand** is pretty much a drop in replacement for React Contexts or Redux and is where all of the API interaction takes place.  
+Zustand, like Context, circumvents prop drilling and allows for the passing of data and state to components. 
+
+Redux is better suited for larger more complex uses and scales better, but for most smaller, lighter weight applications, zustand is pretty neat.
+
+All the state and api interactions take place in the **"src/stores/bookstore.js"** file. The code needs a little optimising but I was learning as I was going so it may look a little obtuse.
+The interface itself is fairly pedestrian. The application's styling is a bit inconsistent as well: using CSS styling in most instances but also javascript styling in the EditBook form.
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### \`npm start\`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Runs the app in the development mode.\\  
+Open http://localhost:3000 to view it in your browser.
 
-The page will reload when you make changes.\
+The page will reload when you make changes.\\  
 You may also see any lint errors in the console.
 
-### `npm test`
+### \`npm test\`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Tests are a bit light on the ground and is where I would focus on if continuing this project.
 
-### `npm run build`
+Launches the test runner in the interactive watch mode.\\  
+See the section about \[running tests\](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-Builds the app for production to the `build` folder.\
+### \`npm run build\`
+
+Builds the app for production to the \`build\` folder.\\  
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The build is minified and the filenames include the hashes.\\
