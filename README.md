@@ -8,6 +8,8 @@ The task was to create a simple API that emplys an in memory database to create,
 I added some seed data and code to the API  so that you have something to play with right off the bat. I also made use of the Book Covers Open Library (https://covers.openlibrary.org) to display a cover for the books.
 
 Note that the book covers don't align with the actual title of the books! They're just for decorative purposes. To get the actual book cover would require looking up the ISBN of the title and then using that in the URL. Out of the scope for this task!
+![image](https://github.com/user-attachments/assets/34891480-5871-48fd-ae82-9149527c43d9)
+
 
 The UI is written in plain old javascript on the React platform.  
 There's nothing very special about the codebase except that it uses **zustand** [(https://zustand.docs.pmnd.rs/getting-started/introduction)](https://zustand.docs.pmnd.rs/getting-started/introduction%5C) as the state management apparatus.  
@@ -18,6 +20,8 @@ Redux is better suited for larger more complex uses and scales better, but for m
 
 All the state and api interactions take place in the **"src/stores/bookstore.js"** file. The code needs a little optimising but I was learning as I was going so it may look a little obtuse.
 The interface itself is fairly pedestrian. The application's styling is a bit inconsistent as well: using CSS styling in most instances but also javascript styling in the EditBook form.
+
+**Note:** some of the more esoteric functionality (paging and sorting) is not functional at this stage. (I had them going but clobbered them somehow hand haven't gone back to fix!)
 
 ## Available Scripts
 
