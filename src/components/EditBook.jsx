@@ -24,31 +24,21 @@ const EditBook = () => {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(bookSchema),
+    mode: 'onChange',
+    resolver: isEditing ? zodResolver(bookSchema) : undefined,
     defaultValues: bookData,
   });
-  //Working for editing book
-  // const onSubmit = async (data) => {
-  //   console.log(`Updating book: ${JSON.stringify(data)}`);
-  //   updateBook(data);
 
-  //   setEditingBook(false); // Close the edit form
-  //   reset(); // Reset the form fields
-  //   setEditingBook(null); // Clear the editing state
-  // };
   const onSubmit = async (data) => {
-    console.log(`Submitting book: ${JSON.stringify(data)}`);
     if (isEditing) {
       await updateBook(data); // Update existing book
     } else {
       await createBook(data); // Create a new book
     }
-
-    fetchBooks(); // Refresh the book list
+    setEditingBook(false); // Close the edit form
   };
 
   const deleteBookHandler = async (book) => {
-    console.log(`Deleting book: ${JSON.stringify(book)}`);
     // Update form fields when bookData changes
     deleteBook(book.id); // Delete the book in the store
     setEditingBook(false); // Close the edit form
@@ -130,13 +120,15 @@ const EditBook = () => {
           Save Changes
         </button>
 
-        <button
-          type="button"
-          style={styles.deleteBtn}
-          onClick={() => deleteBookHandler(editingBook)}
-        >
-          Delete Book
-        </button>
+        {isEditing && (
+          <button
+            type="button"
+            style={styles.deleteBtn}
+            onClick={() => deleteBookHandler(editingBook)}
+          >
+            Delete Book
+          </button>
+        )}
 
         <button
           type="button"

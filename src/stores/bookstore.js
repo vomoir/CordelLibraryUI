@@ -16,6 +16,12 @@ const useBookStore = create((set) => ({
       editingBook: book, // Ensure null when no book is provided
       isEditing: true, // Toggle based on book existence
     }),
+  setAddNewBook: (book) =>
+    set({
+      editingBook: book, // Ensure null when no book is provided
+      isEditing: false, // Toggle based on book existence
+    }),
+
   clearEditingBook: () => set({ editingBook: null, isEditing: false }),
 
   getBookData: () => ({

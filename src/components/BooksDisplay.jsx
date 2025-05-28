@@ -27,24 +27,30 @@ const BooksDisplay = () => {
     toggleDarkMode,
     editingBook,
     setEditingBook,
+    setAddNewBook,
     updateBook,
     clearEditingBook,
     bookDeleted,
+    isEditing,
   } = useBookStore();
 
   const handleAddBookClick = () => {
     console.log(`adding new book...`);
+    console.log('isEditing state:', isEditing);
     const book = useBookStore.getState().getBookData();
-    setEditingBook(book);
-    console.log(`Book data for adding:${editingBook}`);
-    console.log(
-      `Updated Zustand state: ${useBookStore.getState().editingBook}`
-    );
+    setEditingBook(null); // Clear any existing editing state
+    setAddNewBook(book);
+    console.log(`Book data for adding:${JSON.stringify(book)}`);
+    console.log(`Updated Zustand state: ${useBookStore.getState().book}`);
   };
 
   useEffect(() => {
     fetchBooks(currentPage, booksPerPage);
   }, [currentPage, fetchBooks, booksPerPage, bookDeleted]);
+
+  useEffect(() => {
+    console.log('isEditing state:', isEditing);
+  }, [isEditing]);
 
   return (
     <div className={darkMode ? 'dark-mode' : ''}>
